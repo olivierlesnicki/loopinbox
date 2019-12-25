@@ -24,4 +24,4 @@ jobs:
           yarn build-electron
 
       - name: Package
-        run: electron-builder build --mac --win -c.extraMetadata.main=build/electron/main.js --publish never
+        run: yarn package
