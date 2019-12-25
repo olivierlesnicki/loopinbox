@@ -5,24 +5,17 @@ import pretty from "pretty-bytes";
 import firebase from "firebase";
 import _ from "lodash";
 
-import shortid from "shortid";
-
-import { useAuth } from "./auth";
 import { useUserData } from "./userData";
 import Button from "./Button";
 import TextBox from "./TextBox";
 
 import "./Send.css";
 
-const storage = firebase.storage();
-
 export default () => {
   const [username, setUsername] = useState("");
-  const [progress, setProgress] = useState(null);
   const [files, setFiles] = useState([]);
   const [loading, setLoading] = useState(false);
   const history = useHistory();
-  const auth = useAuth();
   const { upload } = useUserData();
 
   const onDrop = useCallback(acceptedFiles => {

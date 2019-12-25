@@ -4,7 +4,6 @@ import { useHistory } from "react-router-dom";
 import Button from "./Button";
 import Canvas, { Header, Body } from "./Canvas";
 import IconButton from "./IconButton";
-import { useAuth } from "./auth";
 
 import "./Inbox.css";
 import LoopList from "./LoopList";
@@ -13,7 +12,6 @@ import { useUserData } from "./userData";
 export default function InboxPage() {
   const [tab, setTab] = useState("inbox");
   const history = useHistory();
-  const auth = useAuth();
   const userData = useUserData();
 
   return (
