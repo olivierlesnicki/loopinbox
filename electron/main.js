@@ -4,6 +4,11 @@ const url = require("url");
 const fs = require("fs-extra");
 const download = require("download");
 
+require("update-electron-app")({
+  repo: "olivierlesnicki/loopinbox",
+  updateInterval: "5 minutes"
+});
+
 const stripeCheckout = require("./services/stripe-checkout");
 
 let mainWindow;
