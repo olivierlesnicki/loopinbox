@@ -1,0 +1,44 @@
+.Send-dropzone {
+  outline: none;
+}
+
+.Send-dropzone-splash {
+  padding: 20px;
+  border: 2px dashed #d6d6d6;
+  border-radius: 4px;
+  margin-top: 20px;
+  text-align: center;
+  cursor: pointer;
+}
+
+.Send-dropzone-loops {
+  font-size: 14px;
+  flex: 1;
+  margin-top: 20px;
+}
+
+.Send-dropzone-loop {
+  border-bottom: 1px solid #e9ebf1;
+  padding: 10px;
+}
+
+.Send-dropzone-loop:last-child {
+  border: none;
+}
+
+.Send-dropzone-loop-name {
+  color: rgb(39, 44, 55);
+  font-weight: 600;
+  font-size: 14px;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+.SendPage .loop-metadata {
+  color: rgb(142, 155, 178);
+  font-size: 12px;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+}
