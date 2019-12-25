@@ -1,9 +1,6 @@
 name: CI
 
-on:
-  create:
-    tags:
-      - "v*"
+on: [push]
 
 jobs:
   release:
@@ -11,7 +8,7 @@ jobs:
 
     strategy:
       matrix:
-        os: [macos-latest, ubuntu-latest, windows-latest]
+        os: [macos-latest]
 
     steps:
       - name: Check out Git repository
@@ -27,12 +24,8 @@ jobs:
 
       - name: Build
         run: |
-          npm run build
-          npm run build-electron
+          yarn build
+          yarn build-electron
 
-      - name: Build/release Electron app
-        uses: samuelmeuli/action-electron-builder@v1
-        with:
-          github_token: ${{ secrets.github_token }}
-          app_root: build
-          release: true
+      - name: Package
+        run: electron-builder build --mac --win -c.extraMetadata.main=build/electron/main.js --publish never
