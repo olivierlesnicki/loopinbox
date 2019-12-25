@@ -3,8 +3,8 @@ name: CI
 on:
   create:
     tags:
-      - 'v*'
-        
+      - "v*"
+
 jobs:
   release:
     runs-on: ${{ matrix.os }}
@@ -21,7 +21,10 @@ jobs:
         uses: actions/setup-node@v1
         with:
           node-version: 10
-          
+
+      - name: Install
+        run: yarn
+
       - name: Build
         run: |
           npm run build
