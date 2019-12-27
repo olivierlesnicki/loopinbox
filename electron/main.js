@@ -58,7 +58,6 @@ const loopCacheDirectoryPath = path.join(
 const refreshLoopCache = async () => {
   await fs.ensureDir(loopCacheDirectoryPath);
   const files = await fs.readdir(loopCacheDirectoryPath);
-  console.log(files);
   data.loopCache = files.reduce((loopCache, file) => {
     loopCache[file.split("/")[0]] = file;
     return loopCache;

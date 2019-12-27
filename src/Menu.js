@@ -11,6 +11,12 @@ export default function Menu() {
     firebase.auth().signOut();
   };
 
+  const cancel = () => {};
+
+  const remove = () => {
+    firebase.auth().currentUser.delete();
+  };
+
   return (
     <Canvas className="Menu">
       <Header>
@@ -19,10 +25,10 @@ export default function Menu() {
       <Body>
         <ul className="Menu-items">
           <li className="Menu-item">
-            <a href="">Cancel membership</a>
+            <button onClick={cancel}>Cancel membership</button>
           </li>
           <li className="Menu-item">
-            <a href="">Delete account</a>
+            <button onClick={remove}>Delete account</button>
           </li>
           <li className="Menu-item">
             <button onClick={logout}>Logout</button>
