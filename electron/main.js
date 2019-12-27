@@ -85,7 +85,6 @@ ipcMain.on("loopinbox.ondragstart", async (e, loop) => {
     data.loopCache[loop.id],
     loop.file.name
   );
-  console.log(file);
   e.sender.startDrag({
     file,
     icon: path.join(__dirname, "logo.png")
