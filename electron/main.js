@@ -39,6 +39,59 @@ function createWindow() {
   stripeCheckout(mainWindow);
 }
 
+ipcMain.on("ondragstart", (e, url) => {
+  e.sender.startDrag({
+    file
+  });
+});
+
+const data = {
+  loopCache: {}
+};
+
+const loopCacheDirectoryPath = path.join(
+  app.getPath("home"),
+  "Loopinbox",
+  "loops"
+);
+
+const refreshLoopCache = async () => {
+  await fs.ensureDir(loopCacheDirectoryPath);
+  const files = await fs.readdir(loopCacheDirectoryPath);
+  console.log(files);
+  data.loopCache = files.reduce((loopCache, file) => {
+    loopCache[file.split("/")[0]] = file;
+    return loopCache;
+  }, {});
+};
+
+ipcMain.on("loopinbox.ready", async e => {
+  await refreshLoopCache();
+  e.sender.send("loopinbox.data", data);
+});
+
+ipcMain.on("loopinbox.cache", async (e, { url, id }) => {
+  const dir = path.join(loopCacheDirectoryPath, id);
+
+  await download(url, dir);
+  await refreshLoopCache();
+
+  e.sender.send("loopinbox.data", data);
+});
+
+ipcMain.on("loopinbox.ondragstart", async (e, loop) => {
+  const file = path.join(
+    loopCacheDirectoryPath,
+    data.loopCache[loop.id],
+    loop.file.name
+  );
+  console.log(file);
+  e.sender.startDrag({
+    file,
+    icon: path.join(__dirname, "logo.png")
+  });
+});
+
 app.on("ready", createWindow);
 
 app.on("window-all-closed", function() {
@@ -51,37 +104,4 @@ app.on("activate", function() {
   if (mainWindow === null) {
     createWindow();
   }
-});
-
-ipcMain.on("ondragstart", (e, url) => {
-  e.sender.startDrag({
-    file
-  });
-});
-
-ipcMain.on("loopinbox.requestLoopCache", async e => {
-  const loopCacheDirectoryPath = path.join(
-    app.getPath("home"),
-    "Loopinbox",
-    "loops"
-  );
-
-  await fs.ensureDir(loopCacheDirectoryPath);
-
-  const loopCache = await fs.readdir(loopCacheDirectoryPath);
-  e.sender.send("loopinbox.loopCache", loopCache || []);
-});
-
-ipcMain.on("loopinbox.cache", async (e, url) => {
-  const loopCacheDirectoryPath = path.join(
-    app.getPath("home"),
-    "Loopinbox",
-    "loops"
-  );
-
-  await fs.ensureDir(loopCacheDirectoryPath);
-  await download(url, loopCacheDirectoryPath);
-
-  const loopCache = await fs.readdir(loopCacheDirectoryPath);
-  e.sender.send("loopinbox.loopCache", loopCache || []);
 });

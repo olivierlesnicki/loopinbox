@@ -2,20 +2,16 @@ import React from "react";
 import classnames from "classnames";
 import pretty from "pretty-bytes";
 
-import firebase from "./firebase";
-
 import "./Loop.css";
 
-const { ipcRenderer } = window;
-const storage = firebase.storage();
-
-export default function Loop({ loop, isActive, isCached, toggle }) {
-  const download = async e => {
-    e.stopPropagation();
-
-    const url = await storage.ref(loop.file.path).getDownloadURL();
-  };
-
+export default function Loop({
+  loop,
+  isActive,
+  isCached,
+  onDragStart,
+  toggle,
+  download
+}) {
   return (
     <div
       className={classnames("Loop", {
@@ -23,6 +19,7 @@ export default function Loop({ loop, isActive, isCached, toggle }) {
         Loop_cached: isCached
       })}
       onClick={toggle}
+      onDragStart={onDragStart}
       draggable={isCached}
     >
       <div className="Loop-content">
@@ -43,9 +40,17 @@ export default function Loop({ loop, isActive, isCached, toggle }) {
           </div>
         </div>
       </div>
-      <button onClick={download} className="Loop-download">
-        <ion-icon name="cloud-download"></ion-icon>
-      </button>
+      {!isCached && (
+        <button
+          onClick={e => {
+            e.stopPropagation();
+            download && download();
+          }}
+          className="Loop-download"
+        >
+          <ion-icon name="cloud-download"></ion-icon>
+        </button>
+      )}
     </div>
   );
 }

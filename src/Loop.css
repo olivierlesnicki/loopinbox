@@ -11,13 +11,17 @@
   flex: 1;
   display: flex;
   align-items: center;
-  opacity: 0.75;
   min-width: 0;
 }
 
 .Loop-details {
   flex: 1;
   min-width: 0;
+  opacity: 0.5;
+}
+
+.Loop_cached .Loop-details {
+  opacity: 1;
 }
 
 .Loop-icon,
