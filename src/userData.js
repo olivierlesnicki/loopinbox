@@ -14,7 +14,7 @@ function useLoopList(type) {
   const auth = useAuth();
   const [loops, setLoops] = useState([]);
   const [newLoops, setNewLoops] = useState([]);
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const collection = firebase
@@ -26,7 +26,7 @@ function useLoopList(type) {
 
     const fetchData = async () => {
       const docs = await collection.where("createdAt", "<=", new Date()).get();
-
+      setLoading(false);
       setLoops(parseDocs(docs));
     };
 
@@ -35,7 +35,7 @@ function useLoopList(type) {
     return collection.where("createdAt", ">", new Date()).onSnapshot(docs => {
       setNewLoops(parseDocs(docs));
     });
-  }, [type]);
+  }, [auth.user.uid, type]);
 
   const refresh = useCallback(() => {
     setNewLoops([]);

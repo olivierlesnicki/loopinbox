@@ -2,8 +2,6 @@ import React, { useCallback, useState } from "react";
 import { useHistory } from "react-router-dom";
 import { useDropzone } from "react-dropzone";
 import pretty from "pretty-bytes";
-import firebase from "firebase";
-import _ from "lodash";
 
 import { useUserData } from "./userData";
 import Button from "./Button";
@@ -14,7 +12,6 @@ import "./Send.css";
 export default () => {
   const [username, setUsername] = useState("");
   const [files, setFiles] = useState([]);
-  const [loading, setLoading] = useState(false);
   const history = useHistory();
   const { upload } = useUserData();
 
@@ -48,7 +45,6 @@ export default () => {
         placeholder="To: Instagram username"
         onChange={changeUsername}
         value={username}
-        disabled={loading}
       />
       <div className="Send-dropzone" {...getRootProps()}>
         {!files.length ? (
@@ -70,10 +66,7 @@ export default () => {
         )}
       </div>
       <div className="Modal-ActionBar">
-        <Button
-          onClick={submit}
-          disabled={!username || loading || !files.length}
-        >
+        <Button onClick={submit} disabled={!username || !files.length}>
           Send
         </Button>
       </div>

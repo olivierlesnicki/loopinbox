@@ -22,7 +22,7 @@ export function ElectronProvider(props) {
     ipcRenderer.on("loopinbox.data", listener);
 
     // Notify electron process that client-side app is ready
-    send("ready");
+    ipcRenderer.send("loopinbox.ready");
 
     return () => ipcRenderer.removeListener("loopinbox.data", listener);
   }, []);

@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useCallback, useEffect } from "react";
 import { Switch, Route, Redirect, useHistory } from "react-router-dom";
 
 import Inbox from "./Inbox";
@@ -19,10 +19,15 @@ export default function() {
   const auth = useAuth();
   const history = useHistory();
 
-  useEffect(() => {
-    ipcRenderer.on("url", (e, { path, state }) => {
+  const handleUrl = useCallback(
+    (e, { path, state }) => {
       history.push(path, state);
-    });
+    },
+    [history]
+  );
+
+  useEffect(() => {
+    ipcRenderer.on("url", handleUrl);
     return () => ipcRenderer.removeAllListeners("url");
   }, []);
 
