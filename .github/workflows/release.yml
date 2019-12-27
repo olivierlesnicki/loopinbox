@@ -27,4 +27,6 @@ jobs:
           REACT_APP_STRIPE_PK: ${{ secrets.STRIPE_PK }}
 
       - name: Package
-        run: yarn package
+        run: yarn release
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
