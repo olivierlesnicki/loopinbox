@@ -39,6 +39,8 @@ export default () => {
     } catch (e) {
       setLoading(false);
     }
+
+    setLoading(false);
   };
 
   return (

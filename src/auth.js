@@ -30,6 +30,10 @@ export function AuthProvider(props) {
           .collection("accounts")
           .doc(user.uid)
           .onSnapshot(doc => {
+            if (!doc.data()) {
+              return firebase.auth().signOut();
+            }
+
             setValue({
               user,
               account: doc.data(),
