@@ -49,7 +49,10 @@ export default function() {
       </Switch>
     );
 
-  if (auth.account.subscription.status !== "active")
+  if (
+    !auth.account.subscription ||
+    auth.account.subscription.status !== "active"
+  )
     return (
       <Switch>
         <Route path="/payment" exact>
