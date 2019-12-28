@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useCallback, useContext, useEffect, useState } from "react";
 import shortid from "shortid";
 
 import "./notifications.css";
@@ -14,7 +14,7 @@ const notificationsContext = React.createContext({
 export const NotificationsProvider = ({ children }) => {
   const [notifications, setNotifications] = useState({});
 
-  const add = notification => {
+  const add = useCallback(notification => {
     const id = shortid.generate();
 
     setNotifications(notifications => {
@@ -25,14 +25,14 @@ export const NotificationsProvider = ({ children }) => {
     });
 
     return id;
-  };
+  }, []);
 
-  const remove = id => {
+  const remove = useCallback(id => {
     setNotifications(({ ...notifications }) => {
       delete notifications[id];
       return notifications;
     });
-  };
+  }, []);
 
   const value = {
     add,
@@ -71,7 +71,7 @@ export const Notification = props => {
   useEffect(() => {
     const notificationId = add(props);
     return () => remove(notificationId);
-  }, [props]);
+  }, [add, remove, props]);
 
   return null;
 };
