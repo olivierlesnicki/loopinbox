@@ -17,25 +17,45 @@ function useLoopList(type) {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const collection = firebase
-      .firestore()
-      .collection("loops")
-      .where("type", "==", type)
-      .where("uid", "==", auth.user.uid)
-      .orderBy("createdAt", "desc");
-
     const fetchData = async () => {
-      const docs = await collection.where("createdAt", "<=", new Date()).get();
+      const docs = await firebase
+        .firestore()
+        .collection("loops")
+        .where("type", "==", type)
+        .where("uid", "==", auth.user.uid)
+        .where("createdAt", "<=", new Date())
+        .orderBy("createdAt", "desc")
+        .get();
+
       setLoading(false);
       setLoops(parseDocs(docs));
     };
 
     fetchData();
+  }, []);
 
-    return collection.where("createdAt", ">", new Date()).onSnapshot(docs => {
-      setNewLoops(parseDocs(docs));
-    });
-  }, [auth.user.uid, type]);
+  useEffect(() => {
+    let unsubscribe;
+
+    const subscribe = () => {
+      unsubscribe && unsubscribe();
+      unsubscribe = firebase
+        .firestore()
+        .collection("loops")
+        .where("type", "==", type)
+        .where("uid", "==", auth.user.uid)
+        .where("createdAt", ">", new Date())
+        .orderBy("createdAt", "desc")
+        .onSnapshot(docs => {
+          setNewLoops(newLoops => [...parseDocs(docs), ...newLoops]);
+          docs.size && subscribe();
+        });
+    };
+
+    subscribe();
+
+    return () => unsubscribe();
+  }, []);
 
   const refresh = useCallback(() => {
     setNewLoops([]);
@@ -88,7 +108,6 @@ export function UserDataProvider({ children }) {
 
   useEffect(() => {
     if (Object.keys(uploads).length) {
-      console.log(outbox.loops, outbox.newLoops, uploads);
       outbox.loops.forEach(loop => {
         if (uploads[loop.file.path]) {
           endUpload(loop.file.path);
