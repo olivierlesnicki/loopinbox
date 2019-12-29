@@ -15,7 +15,6 @@ export function ElectronProvider(props) {
 
   useEffect(() => {
     const listener = (event, ...args) => {
-      console.log(...args);
       setData(...args);
     };
 
