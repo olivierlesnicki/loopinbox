@@ -1,66 +1,39 @@
 {
   "name": "loopinbox",
-  "version": "0.1.7",
+  "description": "Send and receive unlimited loops in your DMs.",
+  "version": "0.2.0",
   "private": true,
-  "productName": "Loopinbox",
-  "main": "electron/main.js",
+  "main": "main.js",
+  "author": {
+    "name": "Olivier Lesnicki"
+  },
   "dependencies": {
-    "axios": "^0.19.0",
-    "classnames": "^2.2.6",
     "download": "^7.1.0",
-    "firebase": "^7.5.0",
     "fs-extra": "^8.1.0",
-    "howler": "^2.1.2",
-    "lodash": "^4.17.15",
-    "pretty-bytes": "^5.3.0",
-    "rc-progress": "^2.5.2",
-    "react": "^16.12.0",
-    "react-dom": "^16.12.0",
-    "react-dropzone": "^10.2.1",
-    "react-router-dom": "^5.1.2",
-    "react-scripts": "3.2.0",
-    "react-stripe-elements": "^6.0.1",
-    "shortid": "^2.2.15",
     "update-electron-app": "^1.5.0"
-  },
-  "scripts": {
-    "start": "export BROWSER=none && react-scripts start",
-    "start-electron": "export ELECTRON_START_URL=http://localhost:3000 && electron --inspect=5858 .",
-    "build": "react-scripts build",
-    "build-electron": "mkdir build/src && cp -r electron/. build/electron && cp -r icons/. build/",
-    "release": "electron-builder build --mac --win -c.extraMetadata.main=build/electron/main.js --publish always",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject"
-  },
-  "eslintConfig": {
-    "extends": "react-app"
-  },
-  "browserslist": {
-    "production": [
-      ">0.2%",
-      "not dead",
-      "not op_mini all"
-    ],
-    "development": [
-      "last 1 chrome version",
-      "last 1 firefox version",
-      "last 1 safari version"
-    ]
   },
   "devDependencies": {
     "electron": "^7.1.2",
     "electron-builder": "^22.2.0"
   },
+  "scripts": {
+    "dev": "export ELECTRON_START_URL=http://localhost:3000/ && electron --inspect=5858 .",
+    "pack": "electron-builder --dir",
+    "dist": "electron-builder --mac --win --publish always"
+  },
   "build": {
-    "files": [
-      "build/**/*",
-      "node_modules/**/*"
-    ],
+    "productName": "Loopinbox",
+    "appId": "com.sommetique.loopinbox",
     "publish": {
       "provider": "github",
       "repo": "loopinbox",
       "owner": "olivierlesnicki"
-    }
-  },
-  "homepage": "./"
+    },
+    "files": [
+      "main.js",
+      "preload.js",
+      "stripe-checkout.js",
+      "**/node_modules"
+    ]
+  }
 }
