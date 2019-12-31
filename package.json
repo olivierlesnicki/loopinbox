@@ -19,7 +19,7 @@
   "scripts": {
     "dev": "export ELECTRON_START_URL=http://localhost:3000/ && electron --inspect=5858 .",
     "pack": "electron-builder --dir",
-    "dist": "electron-builder --mac --win --publish always"
+    "release": "electron-builder --mac --win --publish always"
   },
   "build": {
     "productName": "Loopinbox",

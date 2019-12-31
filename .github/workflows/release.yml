@@ -23,14 +23,6 @@ jobs:
           sed -i '' 's/\^\[\\w/\^\[.\\w/g' node_modules/builder-util/out/util.js
         shell: bash
 
-      - name: Build
-        run: |
-          yarn build
-          yarn build-electron
-        env:
-          REACT_APP_CLOUD_FUNCTION_URL: ${{ secrets.CLOUD_FUNCTION_URL }}
-          REACT_APP_STRIPE_PK: ${{ secrets.STRIPE_PK }}
-
       - name: Package
         run: yarn release
         env:
